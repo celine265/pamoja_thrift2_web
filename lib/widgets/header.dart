@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pamoja_thrift2_web/theme/app_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const String _apkDownloadUrl =
+    'https://github.com/celine265/pamoja-thrift/releases/latest/download/app-release.apk';
+
+Future<void> _launchApkDownload() async {
+  final uri = Uri.parse(_apkDownloadUrl);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+}
 
 class AppHeader extends StatefulWidget {
   const AppHeader({super.key});
@@ -79,7 +90,7 @@ class _AppHeaderState extends State<AppHeader> {
             ),
             const Spacer(),
             if (isMobile)
-              _buildMobileMenu(context, currentRoute)
+              _buildMobileMenu(context)
             else
               _buildDesktopNav(context, currentRoute),
           ],
@@ -93,7 +104,6 @@ class _AppHeaderState extends State<AppHeader> {
       ('/', 'Home'),
       ('/features', 'Features'),
       ('/how-it-works', 'How It Works'),
-      ('/download', 'Download'),
       ('/contact', 'Contact'),
     ];
 
@@ -141,33 +151,32 @@ class _AppHeaderState extends State<AppHeader> {
         MouseRegion(
           cursor: SystemMouseCursors.click,
           child: ElevatedButton(
-            onPressed: () => context.go('/download'),
+            onPressed: _launchApkDownload,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
-            child: const Icon(Icons.download_rounded, size: 18),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.download_rounded, size: 18),
+                SizedBox(width: 8),
+                Text('Download Apk'),
+              ],
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildMobileMenu(BuildContext context, String currentRoute) {
-    final links = [
-      ('/', 'Home', Icons.home_rounded),
-      ('/features', 'Features', Icons.stars_rounded),
-      ('/how-it-works', 'How It Works', Icons.help_outline_rounded),
-      ('/download', 'Download', Icons.download_rounded),
-      ('/contact', 'Contact', Icons.mail_outline_rounded),
-    ];
-
+  Widget _buildMobileMenu(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         MouseRegion(
           cursor: SystemMouseCursors.click,
           child: ElevatedButton(
-            onPressed: () => context.go('/download'),
+            onPressed: _launchApkDownload,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               minimumSize: Size.zero,
@@ -175,7 +184,14 @@ class _AppHeaderState extends State<AppHeader> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            child: const Icon(Icons.download_rounded, size: 20),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.download_rounded, size: 20),
+                SizedBox(width: 6),
+                Text('Apk', style: TextStyle(fontSize: 13)),
+              ],
+            ),
           ),
         ),
         const SizedBox(width: 8),
@@ -204,7 +220,6 @@ class MobileDrawer extends StatelessWidget {
       ('/', 'Home', Icons.home_rounded),
       ('/features', 'Features', Icons.stars_rounded),
       ('/how-it-works', 'How It Works', Icons.help_outline_rounded),
-      ('/download', 'Download', Icons.download_rounded),
       ('/contact', 'Contact', Icons.mail_outline_rounded),
     ];
 
@@ -295,7 +310,7 @@ class MobileDrawer extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  context.go('/download');
+                  _launchApkDownload();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryOrange,
@@ -309,7 +324,7 @@ class MobileDrawer extends StatelessWidget {
                   children: [
                     Icon(Icons.download_rounded, size: 20),
                     SizedBox(width: 8),
-                    Text('Download App'),
+                    Text('Download Apk'),
                   ],
                 ),
               ),

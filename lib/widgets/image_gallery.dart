@@ -91,17 +91,7 @@ class ImageGallery extends StatelessWidget {
               color: Colors.grey.shade100,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.image_outlined, size: 40, color: AppTheme.textSubtle),
-                SizedBox(height: 8),
-                Text(
-                  'Image not found',
-                  style: TextStyle(color: AppTheme.textSubtle, fontSize: 12),
-                ),
-              ],
-            ),
+            child: const Icon(Icons.image_outlined, size: 40, color: AppTheme.textSubtle),
           ),
         ),
       ),

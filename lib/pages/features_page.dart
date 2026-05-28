@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pamoja_thrift2_web/theme/app_theme.dart';
 import 'package:pamoja_thrift2_web/widgets/page_container.dart';
 import 'package:pamoja_thrift2_web/widgets/image_gallery.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const String _apkDownloadUrl =
+    'https://github.com/celine265/pamoja-thrift/releases/latest/download/app-release.apk';
+
+Future<void> _launchApkDownload() async {
+  final uri = Uri.parse(_apkDownloadUrl);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+}
 
 class FeaturesPage extends StatelessWidget {
   const FeaturesPage({super.key});
@@ -213,8 +223,8 @@ class FeaturesPage extends StatelessWidget {
           MouseRegion(
             cursor: SystemMouseCursors.click,
             child: ElevatedButton(
-              onPressed: () => context.go('/download'),
-              child: const Text('Download the App'),
+              onPressed: _launchApkDownload,
+              child: const Text('Download Apk'),
             ),
           ),
         ],

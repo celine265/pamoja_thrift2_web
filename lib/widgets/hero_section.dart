@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pamoja_thrift2_web/theme/app_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const String _apkDownloadUrl =
+    'https://github.com/celine265/pamoja-thrift/releases/latest/download/app-release.apk';
+
+Future<void> _launchApkDownload() async {
+  final uri = Uri.parse(_apkDownloadUrl);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+}
 
 class HeroSection extends StatelessWidget {
   final String title;
@@ -68,8 +78,6 @@ class HeroSection extends StatelessWidget {
               if (showButtons) ...[
                 const SizedBox(height: 40),
                 _buildButtons(context),
-                const SizedBox(height: 32),
-                _buildTrustBadges(),
               ],
             ],
           ),
@@ -110,8 +118,6 @@ class HeroSection extends StatelessWidget {
         if (showButtons) ...[
           const SizedBox(height: 32),
           _buildButtons(context),
-          const SizedBox(height: 28),
-          _buildTrustBadges(),
         ],
         const SizedBox(height: 40),
         _buildHeroImage(),
@@ -128,7 +134,7 @@ class HeroSection extends StatelessWidget {
         MouseRegion(
           cursor: SystemMouseCursors.click,
           child: ElevatedButton(
-            onPressed: () => context.go('/download'),
+            onPressed: _launchApkDownload,
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryOrange,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -141,66 +147,12 @@ class HeroSection extends StatelessWidget {
               children: [
                 Icon(Icons.download_rounded, size: 20),
                 SizedBox(width: 10),
-                Text('Download App'),
-              ],
-            ),
-          ),
-        ),
-        MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: OutlinedButton(
-            onPressed: () => context.go('/how-it-works'),
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.play_circle_outline_rounded, size: 20),
-                SizedBox(width: 10),
-                Text('Learn More'),
+                Text('Download Apk'),
               ],
             ),
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildTrustBadges() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _badge(Icons.people_rounded, '10K+ Users'),
-        Container(width: 1, height: 24, color: AppTheme.borderLight),
-        _badge(Icons.map_rounded, '47 Counties'),
-        Container(width: 1, height: 24, color: AppTheme.borderLight),
-        _badge(Icons.verified_rounded, 'Safe Payments'),
-      ],
-    );
-  }
-
-  Widget _badge(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: AppTheme.primaryGreen),
-          const SizedBox(width: 6),
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: AppTheme.textLight,
-            ),
-          ),
-        ],
-      ),
     );
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pamoja_thrift2_web/widgets/header.dart';
-import 'package:pamoja_thrift2_web/widgets/footer.dart';
 
 class PageContainer extends StatelessWidget {
   final Widget child;
@@ -18,7 +17,6 @@ class PageContainer extends StatelessWidget {
         children: [
           const AppHeader(),
           Expanded(child: child),
-          const AppFooter(),
         ],
       ),
     );

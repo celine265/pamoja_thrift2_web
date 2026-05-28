@@ -4,7 +4,6 @@ import 'package:pamoja_thrift2_web/theme/app_theme.dart';
 import 'package:pamoja_thrift2_web/pages/home_page.dart';
 import 'package:pamoja_thrift2_web/pages/features_page.dart';
 import 'package:pamoja_thrift2_web/pages/how_it_works_page.dart';
-import 'package:pamoja_thrift2_web/pages/download_page.dart';
 import 'package:pamoja_thrift2_web/pages/contact_page.dart';
 
 class AppRouter {
@@ -33,14 +32,6 @@ class AppRouter {
         pageBuilder: (context, state) => _buildPage(
           key: state.pageKey,
           child: const HowItWorksPage(),
-        ),
-      ),
-      GoRoute(
-        path: '/download',
-        name: 'download',
-        pageBuilder: (context, state) => _buildPage(
-          key: state.pageKey,
-          child: const DownloadPage(),
         ),
       ),
       GoRoute(

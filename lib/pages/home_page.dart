@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pamoja_thrift2_web/theme/app_theme.dart';
 import 'package:pamoja_thrift2_web/widgets/hero_section.dart';
 import 'package:pamoja_thrift2_web/widgets/page_container.dart';
 import 'package:pamoja_thrift2_web/widgets/image_gallery.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const String _apkDownloadUrl =
+    'https://github.com/celine265/pamoja-thrift/releases/latest/download/app-release.apk';
+
+Future<void> _launchApkDownload() async {
+  final uri = Uri.parse(_apkDownloadUrl);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+}
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -29,10 +39,8 @@ class HomePage extends StatelessWidget {
 
   Widget _buildImageGallery() {
     final images = [
-      'assets/Images/Screenshot 2026-05-28 101257.png',
-      'assets/Images/Screenshot 2026-05-28 101321.png',
-      'assets/Images/Screenshot 2026-05-28 101518.png',
-      'assets/app promo/promo photo.png',
+      'assets/Images/image2.png',
+      'assets/Images/images.png',
     ];
 
     return Container(
@@ -161,7 +169,7 @@ class HomePage extends StatelessWidget {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: ElevatedButton(
-                onPressed: () => context.go('/download'),
+                onPressed: _launchApkDownload,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AppTheme.darkGreen,
@@ -180,7 +188,7 @@ class HomePage extends StatelessWidget {
                   children: [
                     Icon(Icons.download_rounded, size: 20),
                     SizedBox(width: 10),
-                    Text('Get Started Now'),
+                    Text('Download Apk'),
                   ],
                 ),
               ),
