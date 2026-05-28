@@ -69,28 +69,10 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   Widget _buildContactSection() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 768;
-
     return Container(
       constraints: const BoxConstraints(maxWidth: 1200),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-      child: isMobile
-          ? Column(
-              children: [
-                _buildForm(),
-                const SizedBox(height: 32),
-                _buildInfoCards(),
-              ],
-            )
-          : Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: _buildForm()),
-                const SizedBox(width: 48),
-                Expanded(child: _buildInfoCards()),
-              ],
-            ),
+      child: _buildForm(),
     );
   }
 
@@ -192,76 +174,6 @@ class _ContactPageState extends State<ContactPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildInfoCards() {
-    final info = [
-      ('Email', 'support@pamojathrift.com', Icons.email_outlined),
-      ('Phone', '+254 700 000 000', Icons.phone_outlined),
-      ('Location', 'Nairobi, Kenya', Icons.location_on_outlined),
-      ('Hours', 'Mon - Fri: 9AM - 6PM', Icons.access_time_rounded),
-    ];
-
-    return Column(
-      children: info.map((item) => _buildInfoCard(item.$1, item.$2, item.$3)).toList(),
-    );
-  }
-
-  Widget _buildInfoCard(String title, String value, IconData icon) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: AppTheme.primaryGreen.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: AppTheme.primaryGreen, size: 24),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.textLight,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.textDark,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

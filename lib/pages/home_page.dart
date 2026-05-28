@@ -27,6 +27,7 @@ class HomePage extends StatelessWidget {
             const HeroSection(
               title: 'Buy & Sell Second-Hand\nGoods in Kenya',
               subtitle: 'PamojaThrift is your trusted marketplace for quality pre-owned items. From fashion to electronics, find great deals or start selling today.',
+              imagePath: 'assets/logo/new_logo.jpeg',
             ),
             _buildFeaturesOverview(),
             _buildImageGallery(),
@@ -41,6 +42,7 @@ class HomePage extends StatelessWidget {
     final images = [
       'assets/Images/image2.png',
       'assets/Images/images.png',
+      'assets/Images/pictures.jpeg',
     ];
 
     return Container(
