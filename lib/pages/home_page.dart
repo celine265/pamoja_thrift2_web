@@ -1,83 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pamoja_thrift2_web/theme/app_theme.dart';
-import 'package:pamoja_thrift2_web/widgets/header.dart';
-import 'package:pamoja_thrift2_web/widgets/footer.dart';
 import 'package:pamoja_thrift2_web/widgets/hero_section.dart';
+import 'package:pamoja_thrift2_web/widgets/page_container.dart';
+import 'package:pamoja_thrift2_web/widgets/image_gallery.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
+    return PageContainer(
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            const AppHeader(),
             const HeroSection(
               title: 'Buy & Sell Second-Hand\nGoods in Kenya',
               subtitle: 'PamojaThrift is your trusted marketplace for quality pre-owned items. From fashion to electronics, find great deals or start selling today.',
             ),
-            _buildStatsSection(),
             _buildFeaturesOverview(),
-            _buildCtaSection(),
-            const AppFooter(),
+            _buildImageGallery(),
+            _buildCtaSection(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStatsSection() {
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 1200),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildStat('10K+', 'Active Users'),
-          _buildStat('50K+', 'Items Listed'),
-          _buildStat('95%', 'Satisfaction'),
-          _buildStat('24/7', 'Support'),
-        ],
-      ),
-    );
-  }
+  Widget _buildImageGallery() {
+    final images = [
+      'assets/Images/Screenshot 2026-05-28 101257.png',
+      'assets/Images/Screenshot 2026-05-28 101321.png',
+      'assets/Images/Screenshot 2026-05-28 101518.png',
+      'assets/app promo/promo photo.png',
+    ];
 
-  Widget _buildStat(String value, String label) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.primaryGreen,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 16,
-            color: AppTheme.textLight,
-          ),
-        ),
-      ],
+    return Container(
+      color: AppTheme.lightGreen,
+      child: ImageGallery(imagePaths: images),
     );
   }
 
   Widget _buildFeaturesOverview() {
     final features = [
-      ('Secure Payments', Icons.verified_user, 'Safe transactions with M-Pesa integration'),
-      ('Easy Listing', Icons.add_circle_outline, 'List your items in minutes'),
-      ('Verified Users', Icons.people, 'Trusted community of buyers & sellers'),
-      ('Fast Delivery', Icons.local_shipping, 'Reliable delivery across Kenya'),
+      ('Secure Payments', Icons.verified_user_rounded, 'Safe transactions with M-Pesa integration'),
+      ('Easy Listing', Icons.add_circle_outline_rounded, 'List your items in minutes'),
+      ('Verified Users', Icons.people_rounded, 'Trusted community of buyers & sellers'),
+      ('Fast Delivery', Icons.local_shipping_rounded, 'Reliable delivery across Kenya'),
     ];
 
     return Container(
-      color: AppTheme.lightGreen,
       padding: const EdgeInsets.symmetric(vertical: 64),
       child: Column(
         children: [
@@ -85,8 +57,9 @@ class HomePage extends StatelessWidget {
             'Why Choose PamojaThrift?',
             style: TextStyle(
               fontSize: 32,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
               color: AppTheme.textDark,
+              letterSpacing: -0.3,
             ),
           ),
           const SizedBox(height: 48),
@@ -108,15 +81,15 @@ class HomePage extends StatelessWidget {
   Widget _buildFeatureCard(String title, IconData icon, String description) {
     return Container(
       width: 260,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -130,7 +103,7 @@ class HomePage extends StatelessWidget {
             ),
             child: Icon(icon, size: 32, color: AppTheme.primaryGreen),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Text(
             title,
             style: const TextStyle(
@@ -145,6 +118,7 @@ class HomePage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: AppTheme.textLight,
+              height: 1.5,
             ),
           ),
         ],
@@ -152,43 +126,67 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCtaSection() {
+  Widget _buildCtaSection(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 768;
+
     return Container(
-      constraints: const BoxConstraints(maxWidth: 1200),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Ready to Start?',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.textDark,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Join thousands of Kenyans buying and selling second-hand goods every day.',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: AppTheme.textLight,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                Builder(
-                  builder: (ctx) => ElevatedButton(
-                    onPressed: () => ctx.go('/download'),
-                    child: const Text('Get Started Now'),
-                  ),
-                ),
-              ],
+      decoration: const BoxDecoration(gradient: AppTheme.ctaGradient),
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 1200),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
+        child: Column(
+          children: [
+            Text(
+              'Ready to Start?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: isMobile ? 28 : 36,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+                letterSpacing: -0.3,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            Text(
+              'Join thousands of Kenyans buying and selling second-hand goods every day.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: isMobile ? 16 : 18,
+                color: Colors.white.withOpacity(0.85),
+                height: 1.6,
+              ),
+            ),
+            const SizedBox(height: 36),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: ElevatedButton(
+                onPressed: () => context.go('/download'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: AppTheme.darkGreen,
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 0,
+                  textStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.download_rounded, size: 20),
+                    SizedBox(width: 10),
+                    Text('Get Started Now'),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

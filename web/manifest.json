@@ -1,11 +1,11 @@
 {
-    "name": "pamoja_thrift2_web",
-    "short_name": "pamoja_thrift2_web",
+    "name": "PamojaThrift - Buy & Sell Second-Hand in Kenya",
+    "short_name": "PamojaThrift",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#2E7D32",
+    "theme_color": "#2E7D32",
+    "description": "Kenya's trusted marketplace for buying and selling second-hand goods. Download the app and start thrifting today!",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

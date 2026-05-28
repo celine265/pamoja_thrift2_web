@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pamoja_thrift2_web/widgets/header.dart';
 import 'package:pamoja_thrift2_web/widgets/footer.dart';
 
@@ -9,7 +10,10 @@ class PageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentRoute = GoRouterState.of(context).uri.path;
+
     return Scaffold(
+      endDrawer: MobileDrawer(currentRoute: currentRoute),
       body: Column(
         children: [
           const AppHeader(),

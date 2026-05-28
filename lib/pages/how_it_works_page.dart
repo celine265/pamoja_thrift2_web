@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:pamoja_thrift2_web/theme/app_theme.dart';
-import 'package:pamoja_thrift2_web/widgets/header.dart';
-import 'package:pamoja_thrift2_web/widgets/footer.dart';
+import 'package:pamoja_thrift2_web/widgets/page_container.dart';
+import 'package:pamoja_thrift2_web/widgets/image_gallery.dart';
 
 class HowItWorksPage extends StatelessWidget {
   const HowItWorksPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
+    return PageContainer(
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            const AppHeader(),
             _buildHeader(),
             _buildBuyerSteps(),
             _buildSellerSteps(),
+            _buildImageGallery(),
             _buildFaqSection(),
-            const AppFooter(),
           ],
         ),
       ),
@@ -34,13 +33,14 @@ class HowItWorksPage extends StatelessWidget {
             'How It Works',
             style: TextStyle(
               fontSize: 40,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
               color: AppTheme.textDark,
+              letterSpacing: -0.5,
             ),
           ),
           SizedBox(height: 16),
           Text(
-            'Get started with PamojaThrift in minutes. Whether you\'re buying or selling, we\'ve made it simple.',
+            "Get started with PamojaThrift in minutes. Whether you're buying or selling, we've made it simple.",
             style: TextStyle(
               fontSize: 18,
               color: AppTheme.textLight,
@@ -49,6 +49,20 @@ class HowItWorksPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildImageGallery() {
+    final images = [
+      'assets/Images/Screenshot 2026-05-28 101257.png',
+      'assets/Images/Screenshot 2026-05-28 101321.png',
+      'assets/Images/Screenshot 2026-05-28 101518.png',
+      'assets/app promo/promo photo.png',
+    ];
+
+    return Container(
+      color: AppTheme.lightGreen,
+      child: ImageGallery(imagePaths: images),
     );
   }
 
@@ -69,8 +83,9 @@ class HowItWorksPage extends StatelessWidget {
             'For Buyers',
             style: TextStyle(
               fontSize: 28,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
               color: AppTheme.primaryGreen,
+              letterSpacing: -0.2,
             ),
           ),
           const SizedBox(height: 32),
@@ -82,7 +97,7 @@ class HowItWorksPage extends StatelessWidget {
                 entry.value.$1,
                 entry.value.$2,
                 entry.value.$3,
-                entry.key % 2 == 0,
+                entry.key,
               )).toList(),
             ),
           ),
@@ -109,8 +124,9 @@ class HowItWorksPage extends StatelessWidget {
             'For Sellers',
             style: TextStyle(
               fontSize: 28,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
               color: AppTheme.primaryOrange,
+              letterSpacing: -0.2,
             ),
           ),
           const SizedBox(height: 32),
@@ -122,7 +138,7 @@ class HowItWorksPage extends StatelessWidget {
                 entry.value.$1,
                 entry.value.$2,
                 entry.value.$3,
-                entry.key % 2 == 1,
+                entry.key,
               )).toList(),
             ),
           ),
@@ -131,93 +147,68 @@ class HowItWorksPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStepCard(String number, String title, String description, bool isLeft) {
+  Widget _buildStepCard(String number, String title, String description, int index) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (isLeft) ...[
-            _buildStepContent(number, title, description),
-            const SizedBox(width: 24),
-            _buildStepConnector(),
-          ] else ...[
-            _buildStepConnector(),
-            const SizedBox(width: 24),
-            _buildStepContent(number, title, description),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStepContent(String number, String title, String description) {
-    return Expanded(
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              blurRadius: 15,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
-                color: AppTheme.primaryGreen,
-                borderRadius: BorderRadius.circular(20),
+                gradient: AppTheme.primaryGradient,
+                shape: BoxShape.circle,
               ),
-              child: Text(
-                'Step $number',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
+              child: Center(
+                child: Text(
+                  number,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.textDark,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              description,
-              style: const TextStyle(
-                color: AppTheme.textLight,
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textDark,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      color: AppTheme.textLight,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildStepConnector() {
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: AppTheme.primaryGreen.withOpacity(0.2),
-        shape: BoxShape.circle,
-      ),
-      child: const Icon(
-        Icons.arrow_forward,
-        color: AppTheme.primaryGreen,
-        size: 20,
       ),
     );
   }
@@ -239,8 +230,9 @@ class HowItWorksPage extends StatelessWidget {
             'Frequently Asked Questions',
             style: TextStyle(
               fontSize: 28,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
               color: AppTheme.textDark,
+              letterSpacing: -0.2,
             ),
           ),
           const SizedBox(height: 32),
@@ -253,28 +245,41 @@ class HowItWorksPage extends StatelessWidget {
   Widget _buildFaqItem(String question, String answer) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            question,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.textDark,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.help_outline_rounded, size: 20, color: AppTheme.primaryGreen),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  question,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textDark,
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            answer,
-            style: const TextStyle(
-              color: AppTheme.textLight,
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.only(left: 32),
+            child: Text(
+              answer,
+              style: const TextStyle(
+                color: AppTheme.textLight,
+                height: 1.6,
+              ),
             ),
           ),
         ],
